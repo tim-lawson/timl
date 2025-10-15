@@ -1,0 +1,46 @@
+[project]
+name = "timl"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datasets>=4.2.0",
+    "multiprocess>=0.70.16",
+    "numpy>=2.3.3",
+    "psutil>=7.1.0",
+    "pydantic-settings>=2.11.0",
+    "tiktoken>=0.12.0",
+    "tokenizers>=0.22.1",
+    "torch>=2.8.0",
+    "transformers>=4.57.1",
+    "wandb>=0.22.2",
+]
+
+[project.optional-dependencies]
+cut-cross-entropy = ["cut-cross-entropy>=25.1.1"]
+flash-attn = ["flash-attn>=2.8.3"]
+liger-kernel = ["liger-kernel>=0.6.2"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = ["ruff>=0.14.0", "ty>=0.0.1a22"]
+
+[tool.setuptools.packages.find]
+include = ["timl"]
+namespaces = false
+
+[tool.ty.rules]
+possibly-missing-attribute = "ignore" # torch.distributed
+
+[tool.uv.extra-build-dependencies]
+flash-attn = [{ requirement = "torch", match-runtime = true }]
+
+[tool.uv.extra-build-variables]
+flash-attn = { FLASH_ATTENTION_SKIP_CUDA_BUILD = "TRUE" }
+
+[tool.uv.sources]
+cut-cross-entropy = { git = "https://github.com/tim-lawson/ml-cross-entropy.git", branch = "tim-lawson/fix" }
